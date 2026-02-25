@@ -1,12 +1,27 @@
 const express = require('express');
 const cors = require('cors');
-const { db } = require('./database');
+const { db, getDbHealth } = require('./database');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+
+// GET backend health
+app.get('/api/health', (req, res) => {
+  try {
+    res.json({
+      status: 'ok',
+      db: getDbHealth(),
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: 'error',
+      error: err.message,
+    });
+  }
+});
 
 // GET all products (with optional search/filter)
 app.get('/api/products', (req, res) => {

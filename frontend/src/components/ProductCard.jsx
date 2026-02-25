@@ -1,5 +1,19 @@
 import { useState } from 'react';
-import { Edit2, Trash2, ChevronUp, ChevronDown, Tag, Hash } from 'lucide-react';
+import {
+  Edit2,
+  Trash2,
+  ChevronUp,
+  ChevronDown,
+  Smartphone,
+  Monitor,
+  Headphones,
+  Laptop,
+  ShoppingBag,
+  Shirt,
+  UtensilsCrossed,
+  Utensils,
+  Package,
+} from 'lucide-react';
 
 const CATEGORY_COLORS = {
   Electronics: 'bg-blue-100 text-blue-700',
@@ -16,9 +30,28 @@ const CATEGORY_COLORS = {
 const formatCurrency = (value) =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
 
+const FIRST_TEN_PRODUCT_ICONS = {
+  1: Smartphone,
+  2: Monitor,
+  3: Headphones,
+  4: Laptop,
+  5: ShoppingBag,
+  6: ShoppingBag,
+  7: Shirt,
+  8: Shirt,
+  9: UtensilsCrossed,
+  10: Utensils,
+};
+
+const getProductIcon = (product) => {
+  const numericId = Number(product.id);
+  return FIRST_TEN_PRODUCT_ICONS[numericId] || Package;
+};
+
 export default function ProductCard({ product, onEdit, onDelete, onQuantityChange }) {
   const [localQty, setLocalQty] = useState(product.quantity);
   const [saving, setSaving] = useState(false);
+  const Icon = getProductIcon(product);
 
   const handleIncrement = async () => {
     const newQty = localQty + 1;
@@ -58,6 +91,9 @@ export default function ProductCard({ product, onEdit, onDelete, onQuantityChang
       {/* Category banner */}
       <div className="px-4 pt-4 pb-2">
         <div className="flex items-start justify-between gap-2 mb-3">
+          <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+            <Icon className="w-4 h-4" />
+          </div>
           <span className={`text-xs font-medium px-2 py-1 rounded-full ${categoryColor}`}>
             {product.category}
           </span>
